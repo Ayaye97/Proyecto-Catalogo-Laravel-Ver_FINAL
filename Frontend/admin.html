@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-r from-blue-900 to-blue-700 min-h-screen">
+    <div class="min-h-screen flex flex-col">
+        <!-- Navbar estilo index -->
+        <nav class="sticky top-0 z-50 flex justify-between items-center py-4 px-8 bg-blue-900 text-white shadow-lg">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="images/logo-yaye-blanco.webp" alt="Logo de Yaye Components" class="w-10 h-10">
+                <span class="text-2xl font-bold text-gray-100">ADMIN</span>
+            </a>
+            <!-- Menú hamburguesa -->
+            <div class="relative">
+                <button id="menuBtn" class="focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <!-- Menú desplegable -->
+                <div id="menuDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white text-blue-900 rounded shadow-lg py-2 z-50">
+                    <a href="crear_producto.html" class="block px-4 py-2 hover:bg-blue-100">Crear Producto</a>
+                    <button id="logoutBtn" class="block w-full text-left px-4 py-2 text-red-600 hover:bg-blue-100">Cerrar Sesión</button>
+                </div>
+            </div>
+        </nav>
+        <!-- Contenido principal -->
+        <main class="flex-1 container mx-auto py-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-blue-100">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Imagen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Nombre</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Descripción</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Precio</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Estado</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-blue-800 uppercase tracking-wider">Cantidad</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-blue-800 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productos" class="bg-white divide-y divide-gray-200">
+                            <!-- Aquí tu script externo insertará las filas de productos -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Script menú hamburguesa y cerrar sesión -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const menuBtn = document.getElementById("menuBtn");
+        const menuDropdown = document.getElementById("menuDropdown");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        // Menú hamburguesa
+        if (menuBtn && menuDropdown) {
+            menuBtn.addEventListener("click", function(event) {
+                event.stopPropagation();
+                menuDropdown.classList.toggle("hidden");
+            });
+
+            // Ocultar menú al hacer click fuera
+            document.addEventListener("click", function(event) {
+                if (!menuBtn.contains(event.target) && !menuDropdown.contains(event.target)) {
+                    menuDropdown.classList.add("hidden");
+                }
+            });
+        }
+
+        // Botón cerrar sesión
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", () => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("rol");
+                window.location.href = "login.html";
+            });
+        }
+
+        // Redirección si no hay token
+        if(!localStorage.getItem('token')) {
+            window.location.href = 'login.html';
+        }
+    });
+    </script>
+    <script src="admin_panel.js"></script>
+</body>
+</html>
